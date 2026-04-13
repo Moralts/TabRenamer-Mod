@@ -1,5 +1,6 @@
 {
   "tabrenamer.command.set.success": "已设置重命名规则: %s -> %s",
+  "tabrenamer.command.set.success.multiple": "已为 %s 个玩家设置重命名规则: %s",
   "tabrenamer.command.remove.success": "已移除重命名规则: %s",
   "tabrenamer.command.remove.not_found": "未找到重命名规则: %s",
   "tabrenamer.command.list.empty": "当前没有重命名规则",

@@ -1,5 +1,6 @@
 {
   "tabrenamer.command.set.success": "Set rename rule: %s -> %s",
+  "tabrenamer.command.set.success.multiple": "Set rename rule for %s player(s): %s",
   "tabrenamer.command.remove.success": "Removed rename rule for: %s",
   "tabrenamer.command.remove.not_found": "No rename rule found for: %s",
   "tabrenamer.command.list.empty": "No rename rules set",

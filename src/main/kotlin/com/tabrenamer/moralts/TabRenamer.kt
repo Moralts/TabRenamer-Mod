@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.ChatFormatting
 import net.minecraft.commands.Commands
+import net.minecraft.commands.arguments.EntityArgument
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
@@ -39,19 +40,30 @@ object TabRenamer : ModInitializer {
                     .then(
                         Commands.literal("set")
                             .then(
-                                Commands.argument("original", StringArgumentType.string())
+                                Commands.argument("targets", EntityArgument.players())
                                     .then(
                                         Commands.argument("replacement", StringArgumentType.string())
                                             .executes { ctx ->
-                                                val original = StringArgumentType.getString(ctx, "original")
-                                                val replacement = StringArgumentType.getString(ctx, "replacement")
-                                                RenameRuleManager.setRule(original, replacement)
+                                                val targets = EntityArgument.getPlayers(ctx, "targets")
+                                                val rawReplacement = StringArgumentType.getString(ctx, "replacement")
+                                                val replacement = TextUtil.translateColorCodes(rawReplacement)
+                                                targets.forEach { player ->
+                                                    RenameRuleManager.setRule(player.gameProfile.name, replacement)
+                                                }
                                                 broadcastRules(ctx.source.server.playerList.players)
-                                                ctx.source.sendSuccess(
-                                                    { prefixed(Component.translatable("tabrenamer.command.set.success", original, replacement)) },
-                                                    true
-                                                )
-                                                1
+                                                val preview = TextUtil.parseLegacyText(replacement)
+                                                if (targets.size == 1) {
+                                                    ctx.source.sendSuccess(
+                                                        { prefixed(Component.translatable("tabrenamer.command.set.success", targets.first().gameProfile.name, preview)) },
+                                                        true
+                                                    )
+                                                } else {
+                                                    ctx.source.sendSuccess(
+                                                        { prefixed(Component.translatable("tabrenamer.command.set.success.multiple", targets.size.toString(), preview)) },
+                                                        true
+                                                    )
+                                                }
+                                                targets.size
                                             }
                                     )
                             )
@@ -93,7 +105,7 @@ object TabRenamer : ModInitializer {
                                     )
                                     rules.forEach { (original, replacement) ->
                                         ctx.source.sendSuccess(
-                                            { prefixed(Component.translatable("tabrenamer.command.list.entry", original, replacement)) },
+                                            { prefixed(Component.translatable("tabrenamer.command.list.entry", original, TextUtil.parseLegacyText(replacement))) },
                                             false
                                         )
                                     }

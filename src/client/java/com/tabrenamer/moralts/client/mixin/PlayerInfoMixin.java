@@ -20,7 +20,7 @@ public abstract class PlayerInfoMixin {
         String playerName = this.getProfile().getName();
         String replacement = ClientRuleStore.INSTANCE.getReplacement(playerName);
         if (replacement != null) {
-            cir.setReturnValue(Component.literal(replacement));
+            cir.setReturnValue(com.tabrenamer.moralts.TextUtil.parseLegacyText(replacement));
         }
     }
 }

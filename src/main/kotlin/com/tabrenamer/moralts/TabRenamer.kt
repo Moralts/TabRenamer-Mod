@@ -6,9 +6,11 @@ import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
+import net.minecraft.ChatFormatting
 import net.minecraft.commands.Commands
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import org.slf4j.LoggerFactory
@@ -16,6 +18,11 @@ import org.slf4j.LoggerFactory
 object TabRenamer : ModInitializer {
     private val logger = LoggerFactory.getLogger("tabrenamer")
     val SYNC_RULES_CHANNEL = ResourceLocation("tabrenamer", "sync_rules")
+
+    private fun prefixed(message: MutableComponent): MutableComponent =
+        Component.empty()
+            .append(Component.literal("[TabRenamer] ").withStyle(ChatFormatting.GOLD))
+            .append(message)
 
     override fun onInitialize() {
         RenameRuleManager.load()
@@ -41,7 +48,7 @@ object TabRenamer : ModInitializer {
                                                 RenameRuleManager.setRule(original, replacement)
                                                 broadcastRules(ctx.source.server.playerList.players)
                                                 ctx.source.sendSuccess(
-                                                    { Component.translatable("tabrenamer.command.set.success", original, replacement) },
+                                                    { prefixed(Component.translatable("tabrenamer.command.set.success", original, replacement)) },
                                                     true
                                                 )
                                                 1
@@ -58,12 +65,12 @@ object TabRenamer : ModInitializer {
                                         if (RenameRuleManager.removeRule(original)) {
                                             broadcastRules(ctx.source.server.playerList.players)
                                             ctx.source.sendSuccess(
-                                                { Component.translatable("tabrenamer.command.remove.success", original) },
+                                                { prefixed(Component.translatable("tabrenamer.command.remove.success", original)) },
                                                 true
                                             )
                                         } else {
                                             ctx.source.sendFailure(
-                                                Component.translatable("tabrenamer.command.remove.not_found", original)
+                                                prefixed(Component.translatable("tabrenamer.command.remove.not_found", original))
                                             )
                                         }
                                         1
@@ -76,17 +83,17 @@ object TabRenamer : ModInitializer {
                                 val rules = RenameRuleManager.getRules()
                                 if (rules.isEmpty()) {
                                     ctx.source.sendSuccess(
-                                        { Component.translatable("tabrenamer.command.list.empty") },
+                                        { prefixed(Component.translatable("tabrenamer.command.list.empty")) },
                                         false
                                     )
                                 } else {
                                     ctx.source.sendSuccess(
-                                        { Component.translatable("tabrenamer.command.list.header", rules.size.toString()) },
+                                        { prefixed(Component.translatable("tabrenamer.command.list.header", rules.size.toString())) },
                                         false
                                     )
                                     rules.forEach { (original, replacement) ->
                                         ctx.source.sendSuccess(
-                                            { Component.translatable("tabrenamer.command.list.entry", original, replacement) },
+                                            { prefixed(Component.translatable("tabrenamer.command.list.entry", original, replacement)) },
                                             false
                                         )
                                     }
@@ -100,7 +107,7 @@ object TabRenamer : ModInitializer {
                                 RenameRuleManager.clearRules()
                                 broadcastRules(ctx.source.server.playerList.players)
                                 ctx.source.sendSuccess(
-                                    { Component.translatable("tabrenamer.command.clear.success") },
+                                    { prefixed(Component.translatable("tabrenamer.command.clear.success")) },
                                     true
                                 )
                                 1

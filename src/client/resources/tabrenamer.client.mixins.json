@@ -3,7 +3,7 @@
 	"package": "com.tabrenamer.moralts.client.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-		"ExampleClientMixin"
+		"PlayerInfoMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

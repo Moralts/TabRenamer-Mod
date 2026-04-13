@@ -6,5 +6,10 @@
   "tabrenamer.command.list.empty": "当前没有重命名规则",
   "tabrenamer.command.list.header": "重命名规则 (%s):",
   "tabrenamer.command.list.entry": "  %s -> %s",
-  "tabrenamer.command.clear.success": "已清除所有重命名规则"
+  "tabrenamer.command.clear.success": "已清除所有重命名规则",
+
+  "tabrenamer.config.title": "TabRenamer 设置",
+  "tabrenamer.config.category.general": "通用",
+  "tabrenamer.config.enable_tab_renaming": "启用 Tab 列表重命名",
+  "tabrenamer.config.enable_tab_renaming.tooltip": "开关是否按照服务端规则替换 Tab 列表中的玩家名称"
 }

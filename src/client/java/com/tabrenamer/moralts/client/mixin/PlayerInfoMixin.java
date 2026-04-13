@@ -17,6 +17,7 @@ public abstract class PlayerInfoMixin {
 
     @Inject(method = "getTabListDisplayName", at = @At("RETURN"), cancellable = true)
     private void tabrenamer$modifyTabListDisplayName(CallbackInfoReturnable<Component> cir) {
+        if (!com.tabrenamer.moralts.client.ClientConfig.INSTANCE.getEnableTabRenaming()) return;
         String playerName = this.getProfile().getName();
         String replacement = ClientRuleStore.INSTANCE.getReplacement(playerName);
         if (replacement != null) {

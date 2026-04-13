@@ -14,6 +14,8 @@ object TabRenamerClient : ClientModInitializer {
     private val SYNC_RULES_CHANNEL = ResourceLocation("tabrenamer", "sync_rules")
 
     override fun onInitializeClient() {
+        ClientConfig.load()
+
         ClientPlayNetworking.registerGlobalReceiver(SYNC_RULES_CHANNEL) { _, _, buf, _ ->
             val json = buf.readUtf()
             val type = object : TypeToken<Map<String, String>>() {}.type

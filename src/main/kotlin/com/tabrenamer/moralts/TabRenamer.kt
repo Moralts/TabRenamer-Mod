@@ -41,7 +41,7 @@ object TabRenamer : ModInitializer {
                                                 RenameRuleManager.setRule(original, replacement)
                                                 broadcastRules(ctx.source.server.playerList.players)
                                                 ctx.source.sendSuccess(
-                                                    { Component.literal("Set rename rule: $original -> $replacement") },
+                                                    { Component.translatable("tabrenamer.command.set.success", original, replacement) },
                                                     true
                                                 )
                                                 1
@@ -58,12 +58,12 @@ object TabRenamer : ModInitializer {
                                         if (RenameRuleManager.removeRule(original)) {
                                             broadcastRules(ctx.source.server.playerList.players)
                                             ctx.source.sendSuccess(
-                                                { Component.literal("Removed rename rule for: $original") },
+                                                { Component.translatable("tabrenamer.command.remove.success", original) },
                                                 true
                                             )
                                         } else {
                                             ctx.source.sendFailure(
-                                                Component.literal("No rename rule found for: $original")
+                                                Component.translatable("tabrenamer.command.remove.not_found", original)
                                             )
                                         }
                                         1
@@ -76,17 +76,17 @@ object TabRenamer : ModInitializer {
                                 val rules = RenameRuleManager.getRules()
                                 if (rules.isEmpty()) {
                                     ctx.source.sendSuccess(
-                                        { Component.literal("No rename rules set") },
+                                        { Component.translatable("tabrenamer.command.list.empty") },
                                         false
                                     )
                                 } else {
                                     ctx.source.sendSuccess(
-                                        { Component.literal("Rename rules (${rules.size}):") },
+                                        { Component.translatable("tabrenamer.command.list.header", rules.size.toString()) },
                                         false
                                     )
                                     rules.forEach { (original, replacement) ->
                                         ctx.source.sendSuccess(
-                                            { Component.literal("  $original -> $replacement") },
+                                            { Component.translatable("tabrenamer.command.list.entry", original, replacement) },
                                             false
                                         )
                                     }
@@ -100,7 +100,7 @@ object TabRenamer : ModInitializer {
                                 RenameRuleManager.clearRules()
                                 broadcastRules(ctx.source.server.playerList.players)
                                 ctx.source.sendSuccess(
-                                    { Component.literal("Cleared all rename rules") },
+                                    { Component.translatable("tabrenamer.command.clear.success") },
                                     true
                                 )
                                 1

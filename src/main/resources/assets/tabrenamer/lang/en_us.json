@@ -1,0 +1,9 @@
+{
+  "tabrenamer.command.set.success": "Set rename rule: %s -> %s",
+  "tabrenamer.command.remove.success": "Removed rename rule for: %s",
+  "tabrenamer.command.remove.not_found": "No rename rule found for: %s",
+  "tabrenamer.command.list.empty": "No rename rules set",
+  "tabrenamer.command.list.header": "Rename rules (%s):",
+  "tabrenamer.command.list.entry": "  %s -> %s",
+  "tabrenamer.command.clear.success": "Cleared all rename rules"
+}

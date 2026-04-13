@@ -11,5 +11,7 @@
   "tabrenamer.config.title": "TabRenamer Settings",
   "tabrenamer.config.category.general": "General",
   "tabrenamer.config.enable_tab_renaming": "Enable Tab Renaming",
-  "tabrenamer.config.enable_tab_renaming.tooltip": "Toggle whether player names in the Tab list are replaced according to server rules"
+  "tabrenamer.config.enable_tab_renaming.tooltip": "Toggle whether player names in the Tab list are replaced according to server rules",
+
+  "modmenu.descriptionTranslation.tabrenamer": "A simple mod that allows server admins to visually replace player names in the client-side Tab list."
 }

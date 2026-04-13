@@ -11,5 +11,7 @@
   "tabrenamer.config.title": "TabRenamer 设置",
   "tabrenamer.config.category.general": "通用",
   "tabrenamer.config.enable_tab_renaming": "启用 Tab 列表重命名",
-  "tabrenamer.config.enable_tab_renaming.tooltip": "开关是否按照服务端规则替换 Tab 列表中的玩家名称"
+  "tabrenamer.config.enable_tab_renaming.tooltip": "开关是否按照服务端规则替换 Tab 列表中的玩家名称",
+
+  "modmenu.descriptionTranslation.tabrenamer": "一个简单的，允许服务器管理员在客户端视觉上的 Tab 列表中的玩家名称进行替换的模组"
 }

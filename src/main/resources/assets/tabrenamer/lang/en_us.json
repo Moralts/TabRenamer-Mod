@@ -6,7 +6,12 @@
   "tabrenamer.command.list.empty": "No rename rules set",
   "tabrenamer.command.list.header": "Rename rules (%s):",
   "tabrenamer.command.list.entry": "  %s -> %s",
+  "tabrenamer.command.list.enabled": "Server rename rules: §aEnabled§r",
+  "tabrenamer.command.list.disabled": "Server rename rules: §cDisabled§r",
   "tabrenamer.command.clear.success": "Cleared all rename rules",
+  "tabrenamer.command.enable.success": "Enabled server rename rules",
+  "tabrenamer.command.disable.success": "Disabled server rename rules",
+  "tabrenamer.command.disabled": "Server rename rules are disabled",
 
   "tabrenamer.config.title": "TabRenamer Settings",
   "tabrenamer.config.category.general": "General",

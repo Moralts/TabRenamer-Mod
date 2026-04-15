@@ -26,6 +26,7 @@ object TabRenamer : ModInitializer {
             .append(message)
 
     override fun onInitialize() {
+        ServerConfig.load()
         RenameRuleManager.load()
         registerCommands()
         registerNetworking()
@@ -44,6 +45,12 @@ object TabRenamer : ModInitializer {
                                     .then(
                                         Commands.argument("replacement", StringArgumentType.string())
                                             .executes { ctx ->
+                                                if (!ServerConfig.enableRules) {
+                                                    ctx.source.sendFailure(
+                                                        prefixed(Component.translatable("tabrenamer.command.disabled"))
+                                                    )
+                                                    return@executes 0
+                                                }
                                                 val targets = EntityArgument.getPlayers(ctx, "targets")
                                                 val rawReplacement = StringArgumentType.getString(ctx, "replacement")
                                                 val replacement = TextUtil.translateColorCodes(rawReplacement)
@@ -73,6 +80,12 @@ object TabRenamer : ModInitializer {
                             .then(
                                 Commands.argument("original", StringArgumentType.string())
                                     .executes { ctx ->
+                                        if (!ServerConfig.enableRules) {
+                                            ctx.source.sendFailure(
+                                                prefixed(Component.translatable("tabrenamer.command.disabled"))
+                                            )
+                                            return@executes 0
+                                        }
                                         val original = StringArgumentType.getString(ctx, "original")
                                         if (RenameRuleManager.removeRule(original)) {
                                             broadcastRules(ctx.source.server.playerList.players)
@@ -90,8 +103,37 @@ object TabRenamer : ModInitializer {
                             )
                     )
                     .then(
+                        Commands.literal("enable")
+                            .executes { ctx ->
+                                ServerConfig.setEnableRules(true)
+                                broadcastRules(ctx.source.server.playerList.players)
+                                ctx.source.sendSuccess(
+                                    { prefixed(Component.translatable("tabrenamer.command.enable.success")) },
+                                    true
+                                )
+                                1
+                            }
+                    )
+                    .then(
+                        Commands.literal("disable")
+                            .executes { ctx ->
+                                ServerConfig.setEnableRules(false)
+                                broadcastRules(ctx.source.server.playerList.players)
+                                ctx.source.sendSuccess(
+                                    { prefixed(Component.translatable("tabrenamer.command.disable.success")) },
+                                    true
+                                )
+                                1
+                            }
+                    )
+                    .then(
                         Commands.literal("list")
                             .executes { ctx ->
+                                val stateKey = if (ServerConfig.enableRules) "tabrenamer.command.list.enabled" else "tabrenamer.command.list.disabled"
+                                ctx.source.sendSuccess(
+                                    { prefixed(Component.translatable(stateKey)) },
+                                    false
+                                )
                                 val rules = RenameRuleManager.getRules()
                                 if (rules.isEmpty()) {
                                     ctx.source.sendSuccess(
@@ -116,6 +158,12 @@ object TabRenamer : ModInitializer {
                     .then(
                         Commands.literal("clear")
                             .executes { ctx ->
+                                if (!ServerConfig.enableRules) {
+                                    ctx.source.sendFailure(
+                                        prefixed(Component.translatable("tabrenamer.command.disabled"))
+                                    )
+                                    return@executes 0
+                                }
                                 RenameRuleManager.clearRules()
                                 broadcastRules(ctx.source.server.playerList.players)
                                 ctx.source.sendSuccess(
@@ -137,6 +185,7 @@ object TabRenamer : ModInitializer {
 
     private fun syncRulesToPlayer(player: ServerPlayer) {
         val buf = FriendlyByteBuf(Unpooled.buffer())
+        buf.writeBoolean(ServerConfig.enableRules)
         buf.writeUtf(RenameRuleManager.toJson())
         ServerPlayNetworking.send(player, SYNC_RULES_CHANNEL, buf)
     }

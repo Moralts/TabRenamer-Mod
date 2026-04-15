@@ -17,11 +17,13 @@ object TabRenamerClient : ClientModInitializer {
         ClientConfig.load()
 
         ClientPlayNetworking.registerGlobalReceiver(SYNC_RULES_CHANNEL) { _, _, buf, _ ->
+            val enabled = buf.readBoolean()
             val json = buf.readUtf()
             val type = object : TypeToken<Map<String, String>>() {}.type
             val rules: Map<String, String> = gson.fromJson(json, type)
+            ClientRuleStore.setEnableRules(enabled)
             ClientRuleStore.updateRules(rules)
-            logger.debug("Received ${rules.size} rename rule(s) from server")
+            logger.debug("Received ${rules.size} rename rule(s) from server, enabled=$enabled")
         }
 
         ClientPlayConnectionEvents.DISCONNECT.register(ClientPlayConnectionEvents.Disconnect { _, _ ->

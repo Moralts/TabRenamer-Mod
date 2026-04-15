@@ -6,7 +6,12 @@
   "tabrenamer.command.list.empty": "当前没有重命名规则",
   "tabrenamer.command.list.header": "重命名规则 (%s):",
   "tabrenamer.command.list.entry": "  %s -> %s",
+  "tabrenamer.command.list.enabled": "服务端重命名规则: §a已启用§r",
+  "tabrenamer.command.list.disabled": "服务端重命名规则: §c已禁用§r",
   "tabrenamer.command.clear.success": "已清除所有重命名规则",
+  "tabrenamer.command.enable.success": "已启用服务端重命名规则",
+  "tabrenamer.command.disable.success": "已禁用服务端重命名规则",
+  "tabrenamer.command.disabled": "服务端重命名规则已被禁用",
 
   "tabrenamer.config.title": "TabRenamer 设置",
   "tabrenamer.config.category.general": "通用",
